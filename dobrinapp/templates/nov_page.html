@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Николай Добрин | События</title>
+  {% extends 'base.html' %}
+  {% block content %}
+  <!-- Стили CSS: -->
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+  <script src="{% static 'js/paint_cart.js' %}"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="{% static 'js/full_load.js' %}"></script>
+</head>
+<body>
+    <div class="nov-page">
+        <img src="{{news.photo.url}}">
+        <p class="date_nov">{{news.date}}</p>
+        <h2>{{news.header}}</h2>
+        <p class="text_nov">{{news.body}}</p>
+    </div>
+</body>
+{% endblock %}
+</html>

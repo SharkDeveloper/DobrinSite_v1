@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Страница картины</title>
+  {% extends 'base.html' %}
+  {% block content %}
+  <!-- Стили CSS: -->
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/paint_cart.css' %}">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="{% static 'js/full_load.js' %}"></script>
+</head>
+<script>
+  $(document).ready(function() {
+    $("#buy-popup").hide();
+    $("#buy-button").on("click", function() {
+      $("#buy-popup").fadeIn("slow");
+      $([document.documentElement, document.body]).animate({
+        scrollTop: $("#buy-popup").offset().top - $(window).height() / 2 + 200
+      }, 1000);
+    });
+    $("#exit-popup-button").on("click", function() {
+      $("#buy-popup").fadeOut("slow");
+      $([document.documentElement, document.body]).animate({
+        scrollTop: $("#container-paint").offset().top - $(window).height() / 2
+      }, 1000);
+    });
+    $("#in_cart_button").on("click", function() {
+      $("#buy-popup").fadeOut("slow");
+      $([document.documentElement, document.body]).animate({
+        scrollTop: $("#container-paint").offset().top - $(window).height() / 2
+      }, 1000);
+    });
+  });
+</script>
+
+<body>
+  <section class="section-paint">
+    <div class="container-paint" id="container-paint">
+      <div>
+        <h1>{{picture.name}}</h1>
+        <p style="color: black; margin-bottom: 30px;">
+          {{ picture.description }}
+        </p>
+        <ul>
+          <li><a href="#" class="btn" id="buy-button">Приобрести</a></li>
+          <li style='margin-top:25px'><a href="/gal/" class="btn">Назад в галерею</a></li>
+        </ul>
+      </div>
+      <a href="{{picture.pictures.url}}">
+        <img class="paint-img" src="{{picture.pictures.url}}" alt="{{picture.name}}" />
+      </a>
+    </div>
+  </section>
+  <div class="buy-popup" id="buy-popup">
+    <div class="container_copy">
+      <h1>Как приобрести?</h1>
+      <p>Вы можете приобрести картину, связавшись к художником напрямую, написав на почту:<br><a href="mailto:artdobrin22@gmail.com?subject=Заказ">artdobrin22@gmail.com</a><br><br>Или же отправить запрос художнику используя корзину на сайте</p>
+      <div class="buttons">
+        <form method="POST">
+          {% csrf_token %}
+          <button id='in_cart_button' class="btn_gal" name="in_cart">В корзину</button>
+        </form>
+        <a class="btn_gal" href="#" id="exit-popup-button">Скрыть</a>
+      </div>
+    </div>
+  </div>
+
+</body>
+{% endblock %}
+
+</html>

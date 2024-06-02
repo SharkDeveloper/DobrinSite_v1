@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="google-translate-customization" content="9f841e7780177523-3214ceb76f765f38-gc38c6fe6f9d06436-c"></meta>
+
+  <title>Базовый шаблон</title>
+  {% load static %}
+  <!-- Стили CSS: -->
+  <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/header.css' %}">
+  <!-- Подключение JS: -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="{% static 'js/nav.js' %}"></script>
+  <script src="{% static 'js/full_load.js' %}"></script>
+</head>
+{% if not request.path == '/shopping_cart/' %}
+<header class="header">
+  <div class="hero-nav">
+    <div class="hero-nav__inner">
+      <div class="logo-container">
+        <a href="/" class="logo">
+          <h1>НИКОЛАЙ ДОБРИН</h1>
+        </a>
+      </div>
+    </div>
+    <img class="translate-icon" id="translate-icon" src="{% static 'images/translate_icon.png' %}" alt="translate">
+    <div class="translate" id="translate">
+      <div id="google_translate_element"></div>
+    </div>
+  </div>
+</header>
+{%endif%}
+<div class="container">
+  <div class="header-burger">
+    <input type="checkbox" id="burger-toggle">
+    <label for="burger-toggle" class="burger-menu">
+      <div class="line"></div>
+      <div class="line"></div>
+      <div class="line"></div>
+    </label>
+    <div class="menu">
+      <div class="menu-inner">
+        <ul class="menu-nav">
+          <li class="menu-nav-item"><a class="menu-nav-link" href="/gal/"><span>
+                <div>Галерея</div>
+              </span></a></li>
+          <li class="menu-nav-item"><a class="menu-nav-link" href="/nov/"><span>
+                <div>События</div>
+              </span></a></li>
+          <li class="menu-nav-item"><a class="menu-nav-link" href="/"><span>
+                <div>Главная</div>
+              </span></a></li>
+          <li class="menu-nav-item"><a class="menu-nav-link" href="/bio/"><span>
+                <div>Биография</div>
+              </span></a></li>
+          <li class="menu-nav-item"><a class="menu-nav-link" href="/vid/"><span>
+                <div>Видео</div>
+              </span></a></li>
+        </ul>
+        <div class="gallery">
+          <div class="title">
+            <p>Галерея Николая Добрина</p>
+          </div>
+          <div class="images">
+            <a id="img-link-1" class="image-link" href="/picture/?id={{ nav_pict1.id }}">
+              <div class="image" data-label="{{nav_pict1.name}}"><img src="{{nav_pict1.pictures.url}}" alt="{{nav_pict1.name}}"></div>
+            </a>
+            <a id="img-link-2" class="image-link" href="/picture/?id={{ nav_pict2.id }}">
+              <div class="image" data-label="{{nav_pict2.name}}"><img src="{{nav_pict2.pictures.url}}" alt="{{nav_pict2.name}}"></div>
+            </a>
+            <a id="img-link-3" class="image-link" href="/picture/?id={{ nav_pict3.id }}">
+              <div class="image" data-label="{{nav_pict3.name}}"><img src="{{nav_pict3.pictures.url}}" alt="{{nav_pict3.name}}"></div>
+            </a>
+            <a id="img-link-4" class="image-link" href="/picture/?id={{ nav_pict4.id }}">
+              <div class="image" data-label="{{nav_pict4.name}}"><img src="{{nav_pict4.pictures.url}}" alt="{{nav_pict4.name}}"></div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% if not request.path == '/shopping_cart/' %}
+  <div class="cart-wrapper">
+    <a href="/shopping_cart/">
+      <div class="cart-handle">
+        <div class="cart-body">
+          <div class="cart-hole1"></div>
+          <div class="cart-hole2"></div>
+          <span class="cart-items">
+            {{ shopping_cart_length }}
+          </span>
+        </div>
+      </div>
+    </a>
+  </div>
+  {% endif %}
+  {% block content %}
+  <!-- Здесь содержимое страницы -->
+  {% endblock %}
+  <div class="footer">
+    <div class="content">
+      <div>
+        <div><b>Выставки</b><a href="#">2021</a><a href="#">2022</a><a href="#">2023</a><a href="#">2024</a></div>
+        <div><b>Контакты</b><a href="mailto:artdobrin22@gmail.com?subject=Заказ">E-mail</a>
+        <div style="margin-top:0.5rem"><b>Об авторе</b><a style="margin-left:0.5rem" href="/bio/">Биография</a></div>
+      </div>
+      <div style="margin-top:2rem;">
+        <p>© 2024 Все права защищены.</p>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+<script>
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement(
+            {pageLanguage: 'ru', includedLanguages: 'en,de,es,fr,zh-CN,zh-TW,kk'},
+            'google_translate_element'
+        );
+    }
+    $('#translate').hide();
+    $('#translate-icon').click(function() {
+      if ($('#translate').css('display') == 'block') {
+        $('#translate').fadeOut("slow");
+      }
+      else {
+        $('#translate').fadeIn("slow");
+      }
+    });
+</script>
+<script src="http://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</html>

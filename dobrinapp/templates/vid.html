@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Николай Добрин | Видео</title>
+  {% extends 'base.html' %}
+  {% block content %}
+  <!-- Стили CSS: -->
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+  <script src="{% static 'js/paint_cart.js' %}"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="{% static 'js/full_load.js' %}"></script>
+</head>
+
+<body>
+  {% for vid in media %}
+  <div class='news'>
+    <iframe width="100%" height="300rem" src="{{ vid.videos }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    <div class="news-text">
+      <div class='task__tags'>
+        <h3 class='task__tag'>{{ vid.header }}</h3>
+      </div>
+      <p>{{ vid.body }} </p>
+    </div>
+  </div>
+  {%endfor%}
+  <section class="bottom-nav">
+    <ul class="menu-nav">
+      <li class="menu-nav-item"><a class="menu-nav-link-home" href="/gal/"><span>
+            <div>Галерея</div>
+          </span></a></li>
+      <li class="menu-nav-item"><a class="menu-nav-link-home" href="/"><span>
+            <div>Главная</div>
+          </span></a></li>
+      <li class="menu-nav-item"><a class="menu-nav-link-home" href="/bio/"><span>
+            <div>Биография</div>
+          </span></a></li>
+      <li class="menu-nav-item"><a class="menu-nav-link-home" href="/nov/"><span>
+            <div>События</div>
+          </span></a></li>
+    </ul>
+  </section>
+</body>
+{% endblock %}
+
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <head>
+    <title>Николай Добрин | Галерея</title>
+    {% extends 'base.html' %}
+    {% block content %}
+    <!-- Стили CSS: -->
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/header.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/gal.css' %}">
+    <!-- Скрипты JS: -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'js/full_load.js' %}"></script>
+    <script src="{% static 'js/header.js' %}"></script>
+    <script src="{% static 'js/filter.js' %}"></script>
+  </head>
+
+<body>
+  <section class="filter-gal">
+    <div class="container-filter">
+      <ul class="breadcrumb-filter">
+        <li id="all-filter" class="breadcrumb__item breadcrumb__item-firstChild">
+          <span class="breadcrumb__inner">
+            <h3 class="breadcrumb__title">Все</h3>
+          </span>
+        </li>
+        <li id="portraits-filter" class="breadcrumb__item">
+          <span class="breadcrumb__inner">
+            <h3 class="breadcrumb__title">Портреты</h3>
+          </span>
+        </li>
+        <li id="picture-filter" class="breadcrumb__item">
+          <span class="breadcrumb__inner">
+            <h3 class="breadcrumb__title">Живопись</h3>
+          </span>
+        </li>
+        <li id="abstract-filter" class="breadcrumb__item breadcrumb__item-lastChild">
+          <span class="breadcrumb__inner">
+            <h3 class="breadcrumb__title">Абстракция</h3>
+          </span>
+        </li>
+        <li id="graphics-filter" class="breadcrumb__item breadcrumb__item-lastChild">
+          <span class="breadcrumb__inner">
+            <h3 class="breadcrumb__title">Графика</h3>
+          </span>
+        </li>
+        <li id="lighting-filter" class="breadcrumb__item breadcrumb__item-lastChild">
+          <span class="breadcrumb__inner">
+            <h3 class="breadcrumb__title">Светящиеся</h3>
+          </span>
+        </li>
+      </ul>
+    </div>
+    <div class="toggle-filter">
+      <h3 class="filter-gal-text">В коллекциях</h3>
+      <input id="checkbox_instock" class="toggle-col" type="checkbox" checked>
+      <h3 class="filter-gal-text">В наличии</h3>
+    </div>
+  </section>
+
+  <form method="POST">
+    {% csrf_token %}
+    <input id="instock" type="hidden" name="instock">
+    <input id="genre" type="hidden" name="genre">
+    <button class="apply-filter-button" id="buy-button" name="filter-apply">Применить</button>
+  </form>
+
+  <div class="genre_header">
+    <h2>
+      {% if genre == "0" %}Все картины{% endif %}
+      {% if genre == "1" %}Портреты{% endif %}
+      {% if genre == "2" %}Живопись{% endif %}
+      {% if genre == "3" %}Абстракция{% endif %}
+      {% if genre == "4" %}Графика{% endif %}
+      {% if genre == "5" %}Светящиеся{% endif %}
+      {% if instock == "0" %}из коллекций{% endif %}
+      {% if instock == "1" %}из имеющихся в наличии{% endif %}
+    </h2>
+  </div>
+
+  <div id="catalog" class="gallery-catalog">
+    {% for column in columns %}
+      <div class="gallery__column">
+        {% for item in column %}
+          {% if item %}
+            <a href="/picture/?id={{ item.id }}" class="gallery__link">
+              <figure class="gallery__thumb">
+                <img src="{{ item.pictures.url }}" alt="{{ item.name }}" class="gallery__image">
+                <figcaption class="gallery__caption">{{ item.name }}</figcaption>
+              </figure>
+            </a>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endfor %}
+  </div>
+
+  <div id="mobile_catalog" class="gallery-catalog" style="display:block">
+  {% for item in gallery %}
+    <a href="/picture/?id={{ item.id }}" class="gallery__link">
+      <figure class="gallery__thumb">
+        <img src="{{ item.pictures.url }}" alt="{{ item.name }}" class="gallery__image">
+        <figcaption class="gallery__caption">{{ item.name }}</figcaption>
+      </figure>
+    </a>
+  {% endfor %}
+  </div>
+
+  <section class="bottom-nav">
+    <ul class="menu-nav">
+      <li class="menu-nav-item"><a class="menu-nav-link-home" href="/bio/"><span>
+            <div>Биография</div>
+          </span></a></li>
+      <li class="menu-nav-item"><a class="menu-nav-link-home" href="/"><span>
+            <div>Главная</div>
+          </span></a></li>
+      <li class="menu-nav-item"><a class="menu-nav-link-home" href="/nov/"><span>
+            <div>События</div>
+          </span></a></li>
+      <li class="menu-nav-item"><a class="menu-nav-link-home" href="/vid/"><span>
+            <div>Видео</div>
+          </span></a></li>
+    </ul>
+  </section>
+</body>
+{% endblock %}
+
+</html>

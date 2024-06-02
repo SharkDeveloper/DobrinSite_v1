@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Николай Добрин | События</title>
+  {% extends 'base.html' %}
+  {% block content %}
+  <!-- Стили CSS: -->
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+  <script src="{% static 'js/paint_cart.js' %}"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="{% static 'js/full_load.js' %}"></script>
+</head>
+
+<body>
+  {% for nov in news %}
+  <a href='/nov_page?id={{ nov.id }}' class='news'>
+    <img src="{{nov.photo.url}}">
+    <div class="news-text">
+      <div class='task__tags'>
+        <h3 class='task__tag' style="font-size: 14px; font-weight: 300;">{{nov.date}}</h3>
+        <h3 class='task__tag'>{{nov.header}}</h3>
+      </div>
+      <p>{{nov.body}}</p>
+    </div>
+  </a>
+  {%endfor%}
+  <section class="bottom-nav">
+    <ul class="menu-nav">
+      <li class="menu-nav-item"><a class="menu-nav-link-home" href="/gal/"><span>
+            <div>Галерея</div>
+          </span></a></li>
+      <li class="menu-nav-item"><a class="menu-nav-link-home" href="/"><span>
+            <div>Главная</div>
+          </span></a></li>
+      <li class="menu-nav-item"><a class="menu-nav-link-home" href="/bio/"><span>
+            <div>Биография</div>
+          </span></a></li>
+      <li class="menu-nav-item"><a class="menu-nav-link-home" href="/vid/"><span>
+            <div>Видео</div>
+          </span></a></li>
+    </ul>
+  </section>
+</body>
+{% endblock %}
+
+</html>

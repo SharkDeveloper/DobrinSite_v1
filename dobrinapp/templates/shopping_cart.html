@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Корзина</title>
+  {% extends 'base.html' %}
+  {% block content %}
+  <!-- Стили CSS: -->
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/header.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/cart.css' %}">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="{% static 'js/full_load.js' %}"></script>
+</head>
+
+<body>
+  <div style="min-height: 80%">
+    <div class="wrap cf">
+      <h1 class="projTitle">Галерея Николая Добрина</h1>
+      <div class="heading cf">
+        <h1>Моя корзина</h1>
+        <a href="/gal/" class="continue">Смотреть далее</a>
+      </div>
+      <div class="cart">
+
+        <ul class="cartWrap">
+          {% for pict in shopping_cart %}
+          <li class="items even">
+            <div class="infoWrap">
+              <div class="cartSection info">
+                <h3>{{ pict.first.name }}</h3>
+              </div>
+
+              <div class="cartSection removeWrap">
+                <form method="POST">
+                  {% csrf_token %}
+                  <input type="hidden" name="picture_id" value="{{ pict.first.id }}">
+                  <button id="del_picture" name="del_picture" class="remove">x</button>
+                </form>
+              </div>
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+
+      </div>
+      {% if shopping_cart_length > 0 %}
+      <div class="subtotal cf">
+        <ul>
+          <li class="totalRow"><a href="#" class="btn continue" id="make_order">Запросить покупку</a></li>
+        </ul>
+      </div>
+      {% endif %}
+    </div>
+
+    <form method="POST">
+      {% csrf_token %}
+      <div id="order_form" class="order">
+        <ul>
+          <li><input id="FIO" name='FIO' class="order-form" type="text" placeholder="ФИО"></li>
+          <li><input id="phone" name="phone" class="order-form" type="text" placeholder="Номер телефона"></li>
+          <li><input id="email" name="email" class="order-form" type="email" placeholder="Электронная почта"></li>
+          <li><input id="order_comment" name="order_comment" class="order-form" type="text" placeholder="Комментарий к заказу"></li>
+          <li><button id="submit_order" class="buy-button submit-order" name="submit_order">Подтвердить</button></li>
+        </ul>
+      </div>
+    </form>
+  </div>
+</body>
+<script>
+  // $('.remove').click(function() {
+  //   event.preventDefault();
+  //   $(this).parent().parent().parent().hide(400);
+  // });
+  var fio_accept = false;
+  var email_accept = false;
+  var phone_accept = false;
+  $("#order_form").hide();
+  $("#make_order").click(function() {
+    $("#order_form").show();
+    $('#submit_order').hide()
+    // $('#submit_order').hide()
+    $([document.documentElement, document.body]).animate({
+        scrollTop: $("#order_form").offset().top - $(window).height() / 2 + 200
+    }, 1000);
+  });
+  $('#FIO').keyup(function() {
+    show_btn();
+    if ($(this).val() !== '') {
+      fio_accept = true;
+    } else {
+      fio_accept = false;
+    }
+  });
+  $('#email').keyup(function() {
+    show_btn();
+    if ($(this).val() !== '') {
+      email_accept = true;
+    } else {
+      email_accept = false;
+    }
+  });
+  $('#phone').keyup(function() {
+    show_btn();
+    if ($(this).val() !== '') {
+      phone_accept = true;
+    } else {
+      phone_accept = false;
+    }
+  });
+  function show_btn() {
+    if (fio_accept && email_accept && phone_accept) {
+      $('#submit_order').show();
+    }
+    else {
+      $('#submit_order').hide();
+    }
+  }
+</script>
+{% endblock %}
+
+</html>

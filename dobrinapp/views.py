@@ -14,7 +14,11 @@ def index(request):
 
 def shopping_cart(request):
     pictures_obj = list()
-    pictures_id = None #request.session.get('pictures_id')
+    pictures_id = request.session.get('pictures_id')
+    if pictures_id is None:
+        pictures_id = []
+    pictures_id = list(filter(lambda x: isinstance(x, int), pictures_id))
+    print("pictures_id in shopping cart ", pictures_id)
     if request.method == 'POST' and 'submit_order' in request.POST and pictures_id is not None:
         # отправка письма на почту
         # Order info
@@ -60,7 +64,7 @@ def shopping_cart(request):
 
 
 def gal(request):
-    gallery = Gallery.objects.filter(instock=1)
+    gallery = Gallery.objects.filter(instock=1)[:100]
     genre = '0'
     instock = '1'
     if request.method == 'POST' and 'filter-apply' in request.POST:
@@ -102,9 +106,9 @@ def picture(request):
     picture_id = request.GET.get('id')
     if request.method == 'POST' and 'in_cart' in request.POST:
         session_data = request.session.get('pictures_id')
-        if session_data is not None and not (picture_id in session_data):
+        if session_data is not None and picture_id is not None and picture_id not in session_data:
             session_data.append(picture_id)
-        print("pictres_id= ", session_data)
+        print("picture_id= ", session_data)
         request.session['pictures_id'] = session_data
         print("picture")
     context = create_context(request)
@@ -125,6 +129,7 @@ def bio(request):
 
 def vid(request):
     media = Media.objects.all()
+    print("media =", media)
     context = create_context(request)
     return render(request, 'vid.html', context)
 
@@ -135,40 +140,9 @@ def nov_page(request):
     return render(request, 'nov_page.html', context)
 
 
-# установка куки
-def set_cookie(request, picture_id: int):
-    # получаем из строки запроса имя пользователя
-    pictures = list()
-    pictures = get_cookie(request)
-    response = HttpResponse(f"Hello {pictures}")
-    pictures.append(picture_id)
-    # передаем его в куки
-    response.set_cookie("picture_id", picture_id)
-    print("set_cookie " + picture_id)
-    return response
-
-
-# получение куки
-def get_cookie(request):
-    # получаем куки с ключом picture
-    picture_id = list()
-    try:
-        picture_id = request.COOKIES["picture_id"]
-        print("get_cookie" + type(picture_id))
-    except:
-        print("Error: cookie is empty")
-    return picture_id
-
-
-# удаление куки
-def delete_cookie(request):
-    picture = HttpResponse()
-    picture.delete_cookie()
-    return picture
-
-
 def create_context(request):
     shopping_cart = request.session.get('pictures_id')
+    shopping_cart = shopping_cart if shopping_cart is not None else 0
     shopping_cart_length = len(shopping_cart) if shopping_cart else 0
     context = {
         'nav_pict1': Gallery.objects.order_by('?').first(),

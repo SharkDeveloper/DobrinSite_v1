@@ -1,13 +1,15 @@
-﻿from smtplib import SMTP
+﻿import os
+
+from smtplib import SMTP
 from email.message import EmailMessage
 
-EMAIL_LOGIN = 'artdobrin22@gmail.com'
-EMAIL_PASSWORD = 'ispu nqvh uvak cubh'
-SMTP_HOST = 'smtp.gmail.com'
-SMTP_PORT = '587'
+EMAIL_LOGIN = os.environ.get('EMAIL_LOGIN')
+EMAIL_PASSWORD = os.environ.get('EMAIL_PASSWORD')
+SMTP_HOST = os.environ.get('SMTP_HOST')
+SMTP_PORT = os.environ.get('SMTP_PORT')
 
 
-def send_mail(order_id: int, picture_info: str,contacts: str,comment="") -> None:
+def send_mail(order_id: int, picture_info: str, contacts: str, comment="") -> None:
   msg = EmailMessage()
   msg['Subject'] = f'Заказ №{order_id}'
 

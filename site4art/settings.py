@@ -73,13 +73,18 @@ WSGI_APPLICATION = 'site4art.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+MYSQL_DATABASE = os.environ.get('MYSQL_DATABASE')
+MYSQL_USER = os.environ.get('MYSQL_USER')
+MYSQL_PASSWORD = os.environ.get('MYSQL_PASSWORD')
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'dobrindb',
-        'USER': 'root',
-        'PASSWORD': 'qwe123!@#',
+        'NAME': MYSQL_DATABASE,
+        'USER': MYSQL_USER,
+        'PASSWORD': MYSQL_PASSWORD,
+        'HOST': 'db',
+        'port': '3306'
     }
 }
 
